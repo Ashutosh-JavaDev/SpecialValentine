@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be My Valentine? ❤️</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Cormorant+Garamond:wght@300;400&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <style>
+        :root {
+            --blush: #FFD1DC;
+            --crimson: #8B0000;
+            --deep-rose: #C41E3A;
+            --ivory: #FFFFF0;
+            --soft-white: #FFF8F8;
+            --charcoal: #2C2C2C;
+            --gold: #D4AF37;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'DM Sans', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--blush) 0%, var(--ivory) 50%, var(--deep-rose) 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* Animated gradient background */
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* Floating hearts background animation */
+        .heart-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            opacity: 0.15;
+            animation: float 15s infinite ease-in-out;
+        }
+        
+        .heart:nth-child(1) { left: 10%; animation-delay: 0s; font-size: 24px; }
+        .heart:nth-child(2) { left: 25%; animation-delay: 2s; font-size: 16px; }
+        .heart:nth-child(3) { left: 40%; animation-delay: 4s; font-size: 30px; }
+        .heart:nth-child(4) { left: 55%; animation-delay: 1s; font-size: 20px; }
+        .heart:nth-child(5) { left: 70%; animation-delay: 3s; font-size: 18px; }
+        .heart:nth-child(6) { left: 85%; animation-delay: 5s; font-size: 26px; }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.15;
+            }
+            90% {
+                opacity: 0.15;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Main card container */
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 500px;
+            width: 90%;
+            padding: 2rem;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 3.5rem 2.5rem;
+            box-shadow: 
+                0 20px 60px rgba(139, 0, 0, 0.15),
+                0 0 0 1px rgba(255, 255, 255, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            text-align: center;
+            animation: cardEntrance 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform-origin: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Subtle shimmer effect on card */
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent 30%,
+                rgba(255, 255, 255, 0.3) 50%,
+                transparent 70%
+            );
+            transform: rotate(45deg);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+        
+        @keyframes cardEntrance {
+            0% {
+                opacity: 0;
+                transform: scale(0.8) translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        
+        .card-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* Decorative heart icon */
+        .heart-icon {
+            font-size: 4rem;
+            color: var(--crimson);
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            animation: heartbeat 1.5s ease-in-out infinite;
+            filter: drop-shadow(0 4px 12px rgba(139, 0, 0, 0.3));
+        }
+        
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            10%, 30% { transform: scale(1.1); }
+            20%, 40% { transform: scale(1); }
+        }
+        
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--charcoal);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+        }
+        
+        .subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            color: var(--deep-rose);
+            margin-bottom: 2.5rem;
+            font-weight: 300;
+            letter-spacing: 0.03em;
+        }
+        
+        /* Button container */
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+        
+        /* Base button styles */
+        button {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 500;
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        button:active::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        /* Yes button - Crimson glory */
+        .btn-yes {
+            background: linear-gradient(135deg, var(--crimson) 0%, var(--deep-rose) 100%);
+            color: white;
+            flex: 1;
+            min-width: 140px;
+        }
+        
+        .btn-yes:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(139, 0, 0, 0.4);
+        }
+        
+        /* No button - Runaway style */
+        .btn-no {
+            background: white;
+            color: var(--charcoal);
+            border: 2px solid var(--blush);
+            flex: 1;
+            min-width: 140px;
+            position: absolute;
+            transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        .btn-no:hover {
+            border-color: var(--deep-rose);
+        }
+        
+        /* Celebration state */
+        .celebration {
+            display: none;
+            animation: celebrationEntrance 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        .celebration.active {
+            display: block;
+        }
+        
+        @keyframes celebrationEntrance {
+            0% {
+                opacity: 0;
+                transform: scale(0.5) rotate(-10deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+        }
+        
+        .celebration h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: var(--crimson);
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            animation: textGlow 2s ease-in-out infinite;
+        }
+        
+        @keyframes textGlow {
+            0%, 100% { 
+                text-shadow: 0 0 20px rgba(139, 0, 0, 0.3);
+            }
+            50% { 
+                text-shadow: 0 0 40px rgba(139, 0, 0, 0.6);
+            }
+        }
+        
+        .celebration p {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            color: var(--charcoal);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        
+        /* Video container */
+        .video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            display: none;
+            background: rgba(0, 0, 0, 0.3);
+        }
+        
+        .video-container.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .video-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .card {
+                padding: 2.5rem 1.5rem;
+            }
+            
+            button {
+                font-size: 1rem;
+                padding: 0.9rem 2rem;
+            }
+            
+            .celebration h2 {
+                font-size: 2.2rem;
+            }
+            
+            .heart-icon {
+                font-size: 3rem;
+            }
+        }
+        
+        /* Ensure no button can be clicked through others */
+        .button-group {
+            position: relative;
+            min-height: 60px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating hearts background -->
+    <div class="heart-bg">
+        <div class="heart">❤️</div>
+        <div class="heart">💕</div>
+        <div class="heart">💖</div>
+        <div class="heart">❤️</div>
+        <div class="heart">💕</div>
+        <div class="heart">💖</div>
+    </div>
+    
+    <!-- Video container (hidden initially) -->
+    <div class="video-container" id="videoContainer">
+        <!-- Romantic celebration video - using a beautiful hearts and roses video -->
+        <iframe 
+            id="celebrationVideo"
+            src="https://images.pexels.com/photos/12428565/pexels-photo-12428565.jpeg?"
+            allow="autoplay; encrypted-media"
+            allowfullscreen>
+        </iframe>
+    </div>
+    
+    <div class="container">
+        <div class="card">
+            <div class="card-content">
+                <!-- Initial question state -->
+                <div id="questionState">
+                    <div class="heart-icon">❤️</div>
+                    <h1>Will you be my Valentine?</h1>
+                    <p class="subtitle">This is your moment to make magic happen...</p>
+                    
+                    <div class="button-group">
+                        <button class="btn-yes" id="btnYes">Yes! 💕</button>
+                        <button class="btn-no" id="btnNo">No</button>
+                    </div>
+                </div>
+                
+                <!-- Celebration state (hidden initially) -->
+                <div class="celebration" id="celebrationState">
+                    <div class="heart-icon">💖</div>
+                    <h2>I knew you'd say yes!</h2>
+                    <p>You've just made this the most beautiful day. Our journey together begins now, filled with endless love, laughter, and unforgettable moments. ❤️</p>
+                    <div style="font-size: 3rem; margin-top: 1rem;">
+                        💕 ✨ 💖 ✨ 💕
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM elements
+        const btnYes = document.getElementById('btnYes');
+        const btnNo = document.getElementById('btnNo');
+        const questionState = document.getElementById('questionState');
+        const celebrationState = document.getElementById('celebrationState');
+        const videoContainer = document.getElementById('videoContainer');
+        
+        // Track if celebration has been triggered (prevent multiple triggers)
+        let celebrationTriggered = false;
+        
+        /**
+         * Move the "No" button to a random position within the viewport
+         * Ensures the button stays within visible bounds and doesn't overlap with Yes button
+         */
+        function moveNoButton() {
+            const button = btnNo;
+            const buttonGroup = button.parentElement;
+            const yesButton = btnYes;
+            
+            // Get viewport dimensions
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+            
+            // Get button dimensions
+            const buttonWidth = button.offsetWidth;
+            const buttonHeight = button.offsetHeight;
+            
+            // Get Yes button position to avoid overlap
+            const yesRect = yesButton.getBoundingClientRect();
+            
+            // Calculate safe boundaries (with 20px padding from edges)
+            const maxX = viewportWidth - buttonWidth - 20;
+            const maxY = viewportHeight - buttonHeight - 20;
+            
+            let newX, newY;
+            let attempts = 0;
+            const maxAttempts = 50;
+            
+            // Keep trying until we find a position that doesn't overlap with Yes button
+            do {
+                newX = Math.random() * maxX + 10;
+                newY = Math.random() * maxY + 10;
+                attempts++;
+                
+                // Calculate if this position would overlap with Yes button
+                const wouldOverlap = !(
+                    newX > yesRect.right + 10 ||
+                    newX + buttonWidth < yesRect.left - 10 ||
+                    newY > yesRect.bottom + 10 ||
+                    newY + buttonHeight < yesRect.top - 10
+                );
+                
+                if (!wouldOverlap || attempts >= maxAttempts) {
+                    break;
+                }
+            } while (attempts < maxAttempts);
+            
+            // Apply the new position
+            button.style.position = 'fixed';
+            button.style.left = `${newX}px`;
+            button.style.top = `${newY}px`;
+            button.style.zIndex = '100';
+        }
+        
+        /**
+         * Trigger the celebration sequence
+         */
+        function celebrate() {
+            if (celebrationTriggered) return;
+            celebrationTriggered = true;
+            
+            // Hide question state, show celebration state
+            questionState.style.display = 'none';
+            celebrationState.classList.add('active');
+            
+            // Show video after a brief delay
+            setTimeout(() => {
+                videoContainer.classList.add('active');
+            }, 500);
+            
+            // Trigger confetti burst
+            const duration = 5000; // 5 seconds of confetti
+            const end = Date.now() + duration;
+            
+            const colors = ['#FFD1DC', '#8B0000', '#C41E3A', '#D4AF37', '#FF69B4'];
+            
+            // Create multiple confetti bursts for dramatic effect
+            (function frame() {
+                confetti({
+                    particleCount: 7,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0, y: 0.6 },
+                    colors: colors
+                });
+                confetti({
+                    particleCount: 7,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1, y: 0.6 },
+                    colors: colors
+                });
+                
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+            
+            // Big confetti burst from center
+            setTimeout(() => {
+                confetti({
+                    particleCount: 150,
+                    spread: 120,
+                    origin: { y: 0.6 },
+                    colors: colors,
+                    scalar: 1.2,
+                    gravity: 0.8
+                });
+            }, 300);
+        }
+        
+        // Event listeners
+        
+        // Yes button - trigger celebration
+        btnYes.addEventListener('click', celebrate);
+        
+        // No button - move on hover (desktop)
+        btnNo.addEventListener('mouseenter', moveNoButton);
+        
+        // No button - move on touch start (mobile)
+        btnNo.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Prevent default touch behavior
+            moveNoButton();
+        });
+        
+        // Optional: Also move on focus (keyboard navigation)
+        btnNo.addEventListener('focus', moveNoButton);
+        
+        // Prevent accidental clicks on No button by moving it just before click
+        btnNo.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            moveNoButton();
+        });
+        
+        // Handle window resize to keep No button in bounds
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                // Reset No button position on resize if it's moved
+                if (btnNo.style.position === 'fixed') {
+                    moveNoButton();
+                }
+            }, 250);
+        });
+    </script>
+</body>
+</html>
